@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de Frases</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --card: #16213e;
+    --accent: #e94560;
+    --text: #f1f1f1;
+    --muted: #8892b0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--bg), #0f3460);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    padding: 20px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 40px 32px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .icon { font-size: 40px; margin-bottom: 8px; }
+  h1 {
+    font-size: 18px;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 24px;
+  }
+  #frase {
+    font-size: 22px;
+    line-height: 1.5;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+  }
+  #frase.fade { opacity: 0; }
+  #categoria {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    padding: 4px 14px;
+  }
+  button {
+    margin-top: 28px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(233,69,96,0.4); }
+  button:active { transform: translateY(0); }
+  .contador {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">💡</div>
+    <h1>Frase del momento</h1>
+    <div id="frase">Presiona el botón para empezar</div>
+    <div id="categoria"></div>
+    <br>
+    <button id="btn">Nueva frase</button>
+    <div class="contador" id="contador"></div>
+  </div>
+
+<script>
+  const frases = [
+    { texto: "El que no arriesga, no gana.", cat: "Motivación" },
+    { texto: "Un pulpo tiene tres corazones.", cat: "Dato curioso" },
+    { texto: "La disciplina supera al talento cuando el talento no se disciplina.", cat: "Motivación" },
+    { texto: "La miel nunca se echa a perder, incluso después de miles de años.", cat: "Dato curioso" },
+    { texto: "No cuentes los días, haz que los días cuenten.", cat: "Motivación" },
+    { texto: "El corazón de una ballena azul es del tamaño de un auto pequeño.", cat: "Dato curioso" },
+    { texto: "Empieza donde estás, usa lo que tienes, haz lo que puedas.", cat: "Motivación" },
+    { texto: "Las bananas son técnicamente bayas, pero las fresas no.", cat: "Dato curioso" },
+    { texto: "El éxito es la suma de pequeños esfuerzos repetidos día tras día.", cat: "Motivación" },
+    { texto: "Venus es el único planeta que gira en sentido horario.", cat: "Dato curioso" },
+    { texto: "Cada experto fue alguna vez un principiante.", cat: "Motivación" },
+    { texto: "Los pulpos pueden cambiar de color y textura para camuflarse.", cat: "Dato curioso" }
+  ];
+
+  const fraseEl = document.getElementById('frase');
+  const catEl = document.getElementById('categoria');
+  const contadorEl = document.getElementById('contador');
+  const btn = document.getElementById('btn');
+  let usadas = [];
+  let total = 0;
+
+  function siguienteFrase() {
+    if (usadas.length === frases.length) usadas = [];
+    let idx;
+    do { idx = Math.floor(Math.random() * frases.length); } while (usadas.includes(idx));
+    usadas.push(idx);
+    total++;
+
+    fraseEl.classList.add('fade');
+    setTimeout(() => {
+      fraseEl.textContent = frases[idx].texto;
+      catEl.textContent = frases[idx].cat;
+      fraseEl.classList.remove('fade');
+      contadorEl.textContent = `Frases vistas: ${total}`;
+    }, 200);
+  }
+
+  btn.addEventListener('click', siguienteFrase);
+</script>
+</body>
+</html>
